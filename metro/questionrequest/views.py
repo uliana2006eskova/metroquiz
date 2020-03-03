@@ -5,10 +5,15 @@ from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.db.models import Q
 from django.http import JsonResponse
-
+import json
 @login_required(login_url="/auth/login")
 def map(request):
-    return render(request, 'index.html', context = {'stat' : list_(request.user)})
+    return render(request, 'index.html', context = {'stat' : json.dumps(list_(request.user))})
+
+@login_required(login_url="/auth/login")
+def play(request):
+    return render(request, 'map.html', context = {'stat' : json.dumps(list_(request.user))})
+
 
 
 from django.shortcuts import render
@@ -16,23 +21,21 @@ from .models import *
 from django.http import JsonResponse
 def tojson(user, stat):
     d = {'moscow' : {}}
-    elem = Question.objects.get(station=stat, who=user)
-    d['moscow'][elem.station] = []
+    elem = [Question.objects.get(station=stat, who=user)]
+    d['moscow'][elem[0].station] = []
     for question in elem:
         ans = ''
         try:
             ans = Answer.objects.get(question=question, author=user).text
         except:
             pass
-        d["moscow"][elem.station] = {'text' : question.text, 'ans' : ans, 'id' : question.id}
+        d["moscow"][elem[0].station] = {'text' : question.text, 'ans' : ans, 'id' : question.id}
     return d
 
 
 def list_(user):
     s = set()
-    for elem in TextElem.objects.filter(who=user):
-        s.add(elem.station_name)
-    return [bool(Answer.objects.list(s)
+    return [[bool(Answer.objects.filter(question=i)), i.station] for i in Question.objects.filter(who=user)]
 
 def index(request, stat):
     return JsonResponse(tojson(request.user, stat))

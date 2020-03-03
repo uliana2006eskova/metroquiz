@@ -64,9 +64,21 @@
                         <div class="card" style="border-color: #dc3545;">
                           <div class="card-header">
                             <h1 class="display-4 py-2 text-truncate text-dark" id="name" style="font-family : Roboto; font-weight : 700;"></h1>
+
                           </div>
                           <div class="card-body">
-
+                            <div class="text-info" id="text"  style="font-family : Roboto; font-weight : 400;"></div>
+                            <div class="px-2">
+                                <form action="" method="post" class="justify-content-center" id="sub">
+                                    <div class="form-group">
+                                        <label class="sr-only">Ваш Ответ</label>
+                                        <input type="hidden" id="idd">
+                                        <textarea class="form-control" id="ans" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger btn-lg" id="ans-sum">Сохранить</button>
+                                </form>
+                            </div>
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -10943,8 +10955,12 @@
   };
   var list_ = {{stat|safe}};
   for (const i in list_) {
-    $( "text:contains('{}')".format(list_[i])).each(function() {
+    $( "text:contains('{}')".format(list_[i][1])).each(function() {
       $( this ).css( "font-size", "16px").css( "font-weight", "700");
+      if (list_[i][0]) {
+        alert("mu");
+        $( this ).css( "fill", "green");
+      }
     });
   }
   jQuery.expr[':'].regex = function(elem, index, match) {
@@ -10993,7 +11009,20 @@
   allStates.on("click", function() {
     var name = $.trim($(this).text());
     $.ajax({url: "/ask/" + name , success: function(result){
-      alert(result);
+      $("#name").text(name);
+      $("#text").html(result['moscow'][name]['text']);
+      $("#ans").val(result['moscow'][name]['ans']);
+      $("#idd").val(result['moscow'][name]['id']);
+      $("div#text p").each(function(){
+        $(this).css("font-family", "Roboto").css("font-weight", "400");
+    });
+    $("div#text h2").each(function(){
+      $(this).css("font-family", "Roboto").css("font-weight", "400");
+  });
+      $("div#text img").each(function(){
+        $(this).width("100%");
+    });
+      openNav();
     }});
     allStates.removeClass("on");
     $(this).addClass("on");

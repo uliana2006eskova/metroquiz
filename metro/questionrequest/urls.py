@@ -21,4 +21,5 @@ urlpatterns = [
     path('ask/<str:stat>/', index),
     path('ask', ask),
     path('ans', ans),
+    path('play', play)
 ]
