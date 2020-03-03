@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import map, index, ask, ans
+from .views import map, index, ask, ans, play, ans_play
 urlpatterns = [
     path('', map),
     path('ask/<str:stat>/', index),
     path('ask', ask),
     path('ans', ans),
-    path('play', play)
+    path('play', play),
+    path('anss', ans_play)
 ]

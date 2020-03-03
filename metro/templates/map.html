@@ -55,6 +55,16 @@
 </style>
   </head>
   <body>
+    <script>
+      function show() {
+        $("#idd").css("display", "block");
+        $("#ans").css("display", "block");
+        $("#h").css("display", "block");
+        $("#sub").css("display", "block");
+        $("#f").css("display", "block");
+
+      }
+    </script>
     <div id="overlay">
       <section id="cover" class="min-vh-100">
         <div id="cover-caption">
@@ -69,13 +79,16 @@
                           <div class="card-body">
                             <div class="text-info" id="text"  style="font-family : Roboto; font-weight : 400;"></div>
                             <div class="px-2">
-                                <form action="" method="post" class="justify-content-center" id="sub">
-                                    <div class="form-group">
-                                        <label class="sr-only">Ваш Ответ</label>
+                                <form action="" method="post" class="justify-content-center" id="sub" >
+                                    <div class="form-group" id="f" style="display : none">
+                                        <label class="sr-only" id="h">Ответ</label>
                                         <input type="hidden" id="idd">
-                                        <textarea class="form-control" id="ans" rows="3"></textarea>
+                                        <textarea class="form-control" id="ans" rows="3" readonly></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-danger btn-lg" id="ans-sum">Сохранить</button>
+                                    <div class="row">
+                                      <button type="button" class="btn btn-danger btn-lg offset-2 col-3" id="ans-sum" onclick="show()">Открыть ответ</button>
+                                      <button type="button" class="btn btn-danger btn-lg col-3 offset-2" id="ans-sum" onclick="closeNav()">Закрыть окно</button>
+                                    </div>
                                 </form>
                             </div>
                           </div>
@@ -10958,7 +10971,6 @@
     $( "text:contains('{}')".format(list_[i][1])).each(function() {
       $( this ).css( "font-size", "16px").css( "font-weight", "700");
       if (list_[i][0]) {
-        alert("mu");
         $( this ).css( "fill", "green");
       }
     });
@@ -10982,7 +10994,7 @@
     closeNav()
     $.ajax({
         type:'POST',
-        url:'/ans',
+        url:'/anss',
         data:{
             ans : $("#ans").val(),
             q :  $("#idd").val(),

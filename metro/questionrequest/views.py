@@ -34,7 +34,8 @@ def tojson(user, stat):
 
 
 def list_(user):
-    s = set()
+    if user.is_superuser:
+        return [[bool(Answer.objects.filter(question=i)), i.station] for i in Question.objects.all()]
     return [[bool(Answer.objects.filter(question=i)), i.station] for i in Question.objects.filter(who=user)]
 
 def index(request, stat):
@@ -49,6 +50,18 @@ def ans(request):
     anss = Answer(text=ans, author=request.user, question=Question.objects.get(id=int(question)))
     try:
         anss = Answer.objects.get(author=request.user, question=Question.objects.get(id=int(question)))
+    except:
+        pass
+    anss.text = ans
+    anss.save()
+    return JsonResponse({'status' : "ok"})
+
+def ans_play(request):
+    ans = dict(request.POST)['ans'][0]
+    question = dict(request.POST)['q'][0]
+    anss = Answer(text=ans, question=Question.objects.get(id=int(question)))
+    try:
+        anss = Answer.objects.get(question=Question.objects.get(id=int(question)))
     except:
         pass
     anss.text = ans
