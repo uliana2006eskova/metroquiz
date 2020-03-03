@@ -14,7 +14,7 @@ def login_view(request):
             login(request, user)
             if next:
                 return redirect(next)
-            return redirect('/themes/theme')
+            return redirect('/')
         return render(request, 'authorization/loginFailed.html', context={'form' : UserLoginForm()})
 
     return render(request, 'authorization/login.html', context={'form' : UserLoginForm()})

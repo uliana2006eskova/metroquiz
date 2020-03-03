@@ -1,3 +1,53 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.template import loader
+from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
+from django.db.models import Q
+from django.http import JsonResponse
 
-# Create your views here.
+@login_required(login_url="/auth/login")
+def map(request):
+    return render(request, 'index.html', context = {'stat' : list_(request.user)})
+
+
+from django.shortcuts import render
+from .models import *
+from django.http import JsonResponse
+def tojson(user, stat):
+    d = {'moscow' : {}}
+    elem = Question.objects.get(station=stat, who=user)
+    d['moscow'][elem.station] = []
+    for question in elem:
+        ans = ''
+        try:
+            ans = Answer.objects.get(question=question, author=user).text
+        except:
+            pass
+        d["moscow"][elem.station] = {'text' : question.text, 'ans' : ans, 'id' : question.id}
+    return d
+
+
+def list_(user):
+    s = set()
+    for elem in TextElem.objects.filter(who=user):
+        s.add(elem.station_name)
+    return [bool(Answer.objects.list(s)
+
+def index(request, stat):
+    return JsonResponse(tojson(request.user, stat))
+
+def ask(request):
+    return JsonResponse({"ans" : list_(request.user)})
+
+def ans(request):
+    ans = dict(request.POST)['ans'][0]
+    question = dict(request.POST)['q'][0]
+    anss = Answer(text=ans, author=request.user, question=Question.objects.get(id=int(question)))
+    try:
+        anss = Answer.objects.get(author=request.user, question=Question.objects.get(id=int(question)))
+    except:
+        pass
+    anss.text = ans
+    anss.save()
+    return JsonResponse({'status' : "ok"})
