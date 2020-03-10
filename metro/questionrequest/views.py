@@ -7,14 +7,25 @@ from django.db.models import Q
 from django.http import JsonResponse
 from .models import Information
 import json
+from .urls import *
+import django.conf as conf
+
 @login_required(login_url="/auth/login")
 def map(request):
-    return render(request, 'index.html', context = {'stat' : json.dumps(list_(request.user))})
+    print(conf.settings.T)
+    if conf.settings.T == 1:
+        return render(request, 'index.html', context = {'stat' : json.dumps(list_(request.user))})
+    elif conf.settings.T == 2:
+        return play(request);
+
+
+
 
 @login_required(login_url="/auth/login")
-def play(request):
-    return render(request, 'map.html', context = {'stat' : json.dumps(list__(request.user))})
-
+def ch(request):
+    if request.method == "POST":
+        conf.settings.T = dict(request.POST)['t'][0]
+    return render(request, 'change.html')
 
 
 from django.shortcuts import render

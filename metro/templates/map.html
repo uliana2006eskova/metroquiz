@@ -10980,9 +10980,10 @@
         regex = new RegExp(matchParams.join('').replace(/^\s+|\s+$/g,''), regexFlags);
     return regex.test(jQuery(elem)[attr.method](attr.property));
 }
-  var allStates = $("g:regex(class, .*)");
-  var allStates = $("g:regex(class, Aeri.*)");
+  var allStates = $("g:regex(class, .*)"); 
+  var allPlane = $("g:regex(class, st242)");
   /* Open */
+  alert(allPlane);
   $("#sub").submit(function(event) {
     event.preventDefault();
     closeNav()
@@ -11003,6 +11004,9 @@
     });
 
     return false;
+  });
+  allPlane.on("click", function(event) {
+    alert("a");
   });
   function openNav() {
     document.getElementById("overlay").style.display = "block";
