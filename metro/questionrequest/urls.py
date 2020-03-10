@@ -18,7 +18,7 @@ from django.urls import path, include
 from .views import map, index, ask, ans, play, ans_play
 urlpatterns = [
     path('', map),
-    path('ask/<str:stat>/', index),
+    path('ask/<str:stat>/<int:mode>', index),
     path('ask', ask),
     path('ans', ans),
     path('play', play),

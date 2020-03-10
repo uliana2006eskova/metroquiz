@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.db.models import Q
 from django.http import JsonResponse
+from .models import Information
 import json
 @login_required(login_url="/auth/login")
 def map(request):
@@ -12,7 +13,7 @@ def map(request):
 
 @login_required(login_url="/auth/login")
 def play(request):
-    return render(request, 'map.html', context = {'stat' : json.dumps(list_(request.user))})
+    return render(request, 'map.html', context = {'stat' : json.dumps(list__(request.user))})
 
 
 
@@ -21,25 +22,45 @@ from .models import *
 from django.http import JsonResponse
 def tojson(user, stat):
     d = {'moscow' : {}}
-    elem = [Question.objects.get(station=stat, who=user)]
+    try:
+        elem = [Question.objects.get(station=stat)]
+    except:
+        pass
+    if (user.is_superuser):
+        elem = [Question.objects.get(station=stat)]
     d['moscow'][elem[0].station] = []
     for question in elem:
         ans = ''
-        try:
-            ans = Answer.objects.get(question=question, author=user).text
-        except:
-            pass
         d["moscow"][elem[0].station] = {'text' : question.text, 'ans' : ans, 'id' : question.id}
     return d
 
+def tojsonn(user, stat):
+    d = {'moscow' : {}}
+    try:
+        elem = [Information.objects.get(station=stat)]
+    except:
+        pass
+    if (user.is_superuser):
+        elem = [Information.objects.get(station=stat)]
+    d['moscow'][elem[0].station] = []
+    for question in elem:
+        ans = ''
+        d["moscow"][elem[0].station] = {'text' : question.text, 'ans' : ans, 'id' : question.id}
+    return d
 
 def list_(user):
     if user.is_superuser:
         return [[bool(Answer.objects.filter(question=i)), i.station] for i in Question.objects.all()]
-    return [[bool(Answer.objects.filter(question=i)), i.station] for i in Question.objects.filter(who=user)]
-
-def index(request, stat):
-    return JsonResponse(tojson(request.user, stat))
+    return [[bool(Answer.objects.filter(question=i)), i.station] for i in Question.objects.all()]
+def list__(user):
+    if user.is_superuser:
+        return [[bool(Answer.objects.all()), i.station] for i in Information.objects.all()]
+    return [[bool(Answer.objects.all()), i.station] for i in Information.objects.all()]
+def index(request, stat, mode):
+    if mode == 1:
+        return JsonResponse(tojson(request.user, stat))
+    else:
+        return JsonResponse(tojsonn(request.user, stat))
 
 def ask(request):
     return JsonResponse({"ans" : list_(request.user)})

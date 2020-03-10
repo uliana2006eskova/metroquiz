@@ -70,12 +70,7 @@
                             <div class="text-info" id="text"  style="font-family : Roboto; font-weight : 400;"></div>
                             <div class="px-2">
                                 <form action="" method="post" class="justify-content-center" id="sub">
-                                    <div class="form-group">
-                                        <label class="sr-only">Ваш Ответ</label>
-                                        <input type="hidden" id="idd">
-                                        <textarea class="form-control" id="ans" rows="3"></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-danger btn-lg" id="ans-sum">Сохранить</button>
+                                    <button type="submit" class="btn btn-danger btn-lg" id="ans-sum">Закрыть</button>
                                 </form>
                             </div>
                           </div>
@@ -10990,7 +10985,6 @@
         success:function(json){
         },
         error : function(xhr,errmsg,err) {
-        alert("Код красный");
         console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
     }
     });
@@ -11007,7 +11001,7 @@
   }
   allStates.on("click", function() {
     var name = $.trim($(this).text());
-    $.ajax({url: "/ask/" + name , success: function(result){
+    $.ajax({url: "/ask/" + name + '/1' , success: function(result){
       $("#name").text(name);
       $("#text").html(result['moscow'][name]['text']);
       $("#ans").val(result['moscow'][name]['ans']);

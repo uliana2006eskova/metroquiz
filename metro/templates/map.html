@@ -80,14 +80,7 @@
                             <div class="text-info" id="text"  style="font-family : Roboto; font-weight : 400;"></div>
                             <div class="px-2">
                                 <form action="" method="post" class="justify-content-center" id="sub" >
-                                    <div class="form-group" id="f" style="display : none">
-                                        <label class="sr-only" id="h">Ответ</label>
-                                        <input type="hidden" id="idd">
-                                        <textarea class="form-control" id="ans" rows="3" readonly></textarea>
-                                    </div>
-                                    <div class="row">
-                                      <button type="button" class="btn btn-danger btn-lg offset-2 col-3" id="ans-sum" onclick="show()">Открыть ответ</button>
-                                      <button type="button" class="btn btn-danger btn-lg col-3 offset-2" id="ans-sum" onclick="closeNav()">Закрыть окно</button>
+                                      <button type="button" class="btn btn-danger btn-lg col-3" id="ans-sum" onclick="closeNav()">Закрыть окно</button>
                                     </div>
                                 </form>
                             </div>
@@ -10988,6 +10981,7 @@
     return regex.test(jQuery(elem)[attr.method](attr.property));
 }
   var allStates = $("g:regex(class, .*)");
+  var allStates = $("g:regex(class, Aeri.*)");
   /* Open */
   $("#sub").submit(function(event) {
     event.preventDefault();
@@ -11020,7 +11014,7 @@
   }
   allStates.on("click", function() {
     var name = $.trim($(this).text());
-    $.ajax({url: "/ask/" + name , success: function(result){
+    $.ajax({url: "/ask/" + name + '/2' , success: function(result){
       $("#name").text(name);
       $("#text").html(result['moscow'][name]['text']);
       $("#ans").val(result['moscow'][name]['ans']);

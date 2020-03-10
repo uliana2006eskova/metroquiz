@@ -16,3 +16,11 @@ class Answer(models.Model):
     text = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор ответа", blank=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name="Вопрос", blank=True)
+
+
+class Information(models.Model):
+    class Meta:
+        verbose_name='Информация'
+    station = models.CharField(max_length=200, verbose_name="Название станции")
+    text = SummernoteTextField(verbose_name="Информация")
+    who = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Для кого вопросы")
