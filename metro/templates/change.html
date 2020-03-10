@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	</head>
+	<body>
+		<button id="1" class="btn">1</button>
+		<button id="2" class="btn">2</button>
+		<button id="3" class="btn">3</button>
+		<script type="text/javascript">
+			$("#1").on("click", function(event) {
+				$.ajax({
+		        type:'POST',
+		        url:'',
+		        data:{
+		            t : "1"
+		        },
+		        success:function(json){
+		        },
+		        error : function(xhr,errmsg,err) {
+		        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+		    }
+		    });
+			});
+			$("#2").on("click", function(event) {
+				$.ajax({
+		        type:'POST',
+		        url:'',
+		        data:{
+		            t : "2"
+		        },
+		        success:function(json){
+		        },
+		        error : function(xhr,errmsg,err) {
+		        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+		    }
+		    });
+			})
+			$("#3").on("click", function(event) {
+				$.ajax({
+		        type:'POST',
+		        url:'',
+		        data:{
+		            t : "3"
+		        },
+		        success:function(json){
+		        },
+		        error : function(xhr,errmsg,err) {
+		        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+		    }
+		    });
+			})
+		</script>
+	</body>
+</html>
