@@ -12,12 +12,15 @@ import django.conf as conf
 
 @login_required(login_url="/auth/login")
 def map(request):
-    print(conf.settings.T)
     if int(conf.settings.T) == 1:
         return render(request, 'index.html', context = {'stat' : json.dumps(list_(request.user))})
     elif int(conf.settings.T) == 2:
         return play(request);
 
+
+@login_required(login_url="/auth/login")
+def play(request):
+    return render(request, 'map.html', context = {'stat' : json.dumps(list__(request.user))})
 
 
 
