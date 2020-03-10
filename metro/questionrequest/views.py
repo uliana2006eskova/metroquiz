@@ -13,9 +13,9 @@ import django.conf as conf
 @login_required(login_url="/auth/login")
 def map(request):
     print(conf.settings.T)
-    if conf.settings.T == 1:
+    if int(conf.settings.T) == 1:
         return render(request, 'index.html', context = {'stat' : json.dumps(list_(request.user))})
-    elif conf.settings.T == 2:
+    elif int(conf.settings.T) == 2:
         return play(request);
 
 
